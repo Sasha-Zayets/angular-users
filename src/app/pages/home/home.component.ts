@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
 
   clearSearch(): void {
     this.searchUser = '';
+    this.listUsers = this.listAllUsers;
   }
 
   filterUser(): void {
@@ -30,5 +31,9 @@ export class HomeComponent implements OnInit {
       const name = el.name.toLocaleUpperCase();
       return name.includes(this.searchUser.toLocaleUpperCase());
     });
+  }
+
+  removeUser(idUser: number): void {
+    this.listUsers = this.listUsers.filter(el => el.id !== idUser);
   }
 }

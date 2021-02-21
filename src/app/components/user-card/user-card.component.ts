@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {User} from '../../models';
+import {Component, Input, EventEmitter, OnInit, Output} from '@angular/core';
+import { User } from '../../models';
 
 @Component({
   selector: 'app-user-card',
@@ -9,10 +9,14 @@ import {User} from '../../models';
 
 export class UserCardComponent implements OnInit {
   @Input() user: User;
+  @Output() handleRemoveUser = new EventEmitter<number>();
 
   constructor() {}
 
   ngOnInit(): void {
   }
 
+  removeUser(): void {
+    this.handleRemoveUser.emit(this.user.id);
+  }
 }

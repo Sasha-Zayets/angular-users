@@ -22,7 +22,7 @@
 <div class="grid-container">
   <ng-template [ngIf]="listUsers.length > 0" [ngIfElse]="notElement">
     <div *ngFor="let user of listUsers" class="grid-item">
-      <app-user-card [user]="user"></app-user-card>
+      <app-user-card [user]="user" (handleRemoveUser)="removeUser($event)"></app-user-card>
     </div>
   </ng-template>
 </div>
