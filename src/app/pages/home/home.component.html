@@ -1,0 +1,34 @@
+<div class="search-wrapper">
+  <mat-form-field class="example-form-field">
+    <mat-label>Search user</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="searchUser"
+      (input)="filterUser()"
+    >
+    <button
+      *ngIf="searchUser"
+      mat-button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="clearSearch()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div class="grid-container">
+  <ng-template [ngIf]="listUsers.length > 0" [ngIfElse]="notElement">
+    <div *ngFor="let user of listUsers" class="grid-item">
+      <app-user-card [user]="user"></app-user-card>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #notElement>
+  <div class="center-text">
+    No items found
+  </div>
+</ng-template>
