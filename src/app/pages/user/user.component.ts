@@ -10,15 +10,28 @@ import { User } from '../../models';
 })
 export class UserComponent implements OnInit {
   userInfo = {} as User;
+  loading = false;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
   ) {}
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.getLoadingData();
     const idUser = this.route.snapshot.paramMap.get('id');
-    this.userInfo = await this.userService.getUserInfo(Number(idUser));
+    this.getUser(Number(idUser));
   }
 
+  getLoadingData(): void {
+    this.userService.getValueLoading().subscribe((value: boolean) => {
+      this.loading = value;
+    });
+  }
+
+  getUser(id: number): void {
+    this.userService.getUserInfo(id).subscribe((data: User) => {
+      this.userInfo = data;
+    });
+  }
 }

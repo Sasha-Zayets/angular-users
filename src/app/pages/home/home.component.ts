@@ -16,9 +16,15 @@ export class HomeComponent implements OnInit {
     private userService: UserService,
   ) { }
 
-  async ngOnInit(): Promise<void> {
-    this.listUsers = await this.userService.getListUser();
+  ngOnInit(): void {
+    this.getUser();
     this.listAllUsers = this.listUsers;
+  }
+
+  getUser(): void {
+    this.userService.getListUser().subscribe((data: User[]) => {
+      this.listUsers = data;
+    });
   }
 
   clearSearch(): void {

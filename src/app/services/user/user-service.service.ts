@@ -1,42 +1,50 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  loadingData = false;
+  private loadingData: BehaviorSubject<boolean>;
 
   constructor(
     private httClient: HttpClient,
-  ) { }
+  ) {
+    this.loadingData = new BehaviorSubject<boolean>(false);
+  }
 
-  async getListUser(): Promise<User[]> {
+  getListUser(): Observable<User[]> {
     try {
-      this.loadingData = true;
-      return await this.httClient
-        .get<User[]>(`${environment.api_url}/users`)
-        .toPromise();
+      this.setValueLoading(true);
+      return this.httClient.get<User[]>(`${environment.api_url}/users`);
     } catch (e) {
       console.log(e);
       return e;
     } finally {
-      this.loadingData = false;
+      this.setValueLoading(false);
     }
   }
 
-  async getUserInfo(id: number): Promise<User> {
+  setValueLoading(value: boolean): void {
+    this.loadingData.next(value);
+  }
+
+  getValueLoading(): Observable<boolean> {
+    return this.loadingData;
+  }
+
+  getUserInfo(id: number): Observable<User> {
     try {
-      return await this.httClient
-        .get(`${environment.api_url}/users/${id}`)
-        .toPromise() as User;
+      this.setValueLoading(true);
+      return this.httClient.get<User>(`${environment.api_url}/users/${id}`);
     } catch (e) {
       console.log(e);
       return e;
     } finally {
-      this.loadingData = false;
+      this.setValueLoading(false);
     }
   }
 }
